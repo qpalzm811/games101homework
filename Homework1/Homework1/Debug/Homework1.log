@@ -1,0 +1,8 @@
+﻿main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall cv::Mat::Mat(int,int,int,void *,unsigned int)" (??0Mat@cv@@QAE@HHHPAXI@Z)，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall cv::Mat::~Mat(void)" (??1Mat@cv@@QAE@XZ)，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "public: void __thiscall cv::Mat::convertTo(class cv::debug_build_guard::_OutputArray const &,int,double,double)const " (?convertTo@Mat@cv@@QBEXABV_OutputArray@debug_build_guard@2@HNN@Z)，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "bool __cdecl cv::imwrite(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class cv::debug_build_guard::_InputArray const &,class std::vector<int,class std::allocator<int> > const &)" (?imwrite@cv@@YA_NABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV_InputArray@debug_build_guard@1@ABV?$vector@HV?$allocator@H@std@@@3@@Z)，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "int __cdecl cv::waitKey(int)" (?waitKey@cv@@YAHH@Z)，函数 _main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 "void __cdecl cv::imshow(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class cv::debug_build_guard::_InputArray const &)" (?imshow@cv@@YAXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV_InputArray@debug_build_guard@1@@Z)，函数 _main 中引用了该符号
+D:\OpenCV\opencv\build\x64\vc15\lib\opencv_world460d.lib : warning LNK4272: 库计算机类型“x64”与目标计算机类型“x86”冲突
+D:\MyProject\games101homework\Homework1\Debug\Homework1.exe : fatal error LNK1120: 6 个无法解析的外部命令
