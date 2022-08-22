@@ -66,9 +66,15 @@ class rasterizer
 
     std::vector<Eigen::Vector3f>& frame_buffer() { return frame_buf; }
 
+    //后加的Rodrigues旋转公式声明
+    void set_rodrigues(const Eigen::Matrix4f& r);
+
   private:
     void draw_line(Eigen::Vector3f begin, Eigen::Vector3f end);
     void rasterize_wireframe(const Triangle& t);
+
+    //后加的Rodrigues旋转公式声明
+    Eigen::Matrix4f rodrigues;
 
   private:
     Eigen::Matrix4f model;

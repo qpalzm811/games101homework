@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
 *.vs
+*.idb
+*.pdb
+*.tlog
 
 # Compiled Object files
 *.slo
@@ -31,3 +34,11 @@
 *.exe
 *.out
 *.app
+Homework1/Homework1/x64/Debug/Homework1.ilk
+Homework1/Homework1/x64/Debug/Homework1.log
+Homework1/Homework1/x64/Debug/Homework1.tlog/CL.command.1.tlog
+Homework1/Homework1/x64/Debug/Homework1.tlog/CL.read.1.tlog
+Homework1/Homework1/x64/Debug/Homework1.tlog/CL.write.1.tlog
+Homework1/Homework1/x64/Debug/vc143.idb
+Homework1/Homework1/x64/Debug/vc143.pdb
+Homework1/x64/Debug/Homework1.pdb

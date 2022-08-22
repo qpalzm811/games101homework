@@ -1,3 +1,4 @@
+//参考 https://blog.csdn.net/ycrsw/article/details/123834579
 #include "Triangle.hpp"
 #include "rasterizer.hpp"
 #include <eigen3/Eigen/Eigen>
@@ -43,6 +44,29 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
     model = rotationZ * model;
      
     return model;
+}
+// 任意轴旋转
+Eigen::Matrix4f get_rotation(Vector3f axis, float angle)
+{
+    double radian = angle / 180 * MY_PI;
+    Eigen::Matrix4f I = Eigen::Matrix4f::Identity();
+    //用到罗德里格旋转公式 Rodrigues' rotation formula
+
+    Eigen::Vector4f axi;
+    axi << axis.x(), axis.y(), axis.z(), 0;
+    Eigen::RowVector4f taxi;
+    taxi << axis.x(), axis.y(), axis.z(), 0;
+
+    Eigen::Matrix4f N;
+    N <<0, -axis.z(), axis.y(), 0,
+        axis.z(), 0, -axis.x(), 0,
+        -axis.y(), axis.x(), 0, 0,
+        0, 0, 0, 1;
+
+    Eigen::Matrix4f Rodrigues;
+    Rodrigues = cos(radian) * I + (1 - cos(radian)) * axi * taxi + sin(radian) * N;
+     
+    return Rodrigues;
 }
 //eye_fov         垂直可视角度
 //aspect_tetio    宽高比
@@ -96,29 +120,30 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     return projection;
 }
 
+
 int main(int argc, const char** argv)
 {
-    float angle = 0;
-    bool command_line = false;
-    std::string filename = "output.png";
+    float angle = 0;//定义角度
+    bool command_line = false;//定义命令行开关标志，默认为关掉
+    std::string filename = "output.png";//定义文件名称
 
+    Eigen::Vector3f raxis(0, 0, 1);
+    double rangle = 0, ra;
     if (argc >= 3) {
         command_line = true;
         angle = std::stof(argv[2]); // -r by default
         if (argc == 4) {
             filename = std::string(argv[3]);
         }
-        else
-            return 0;
     }
 
     rst::rasterizer r(700, 700);
 
-    Eigen::Vector3f eye_pos = {0, 0, 5};
+    Eigen::Vector3f eye_pos = { 0, 0, 5 };
 
-    std::vector<Eigen::Vector3f> pos{{2, 0, -2}, {0, 2, -2}, {-2, 0, -2}};
+    std::vector<Eigen::Vector3f> pos{ {2, 0, -2}, {0, 2, -2}, {-2, 0, -2} };
 
-    std::vector<Eigen::Vector3i> ind{{0, 1, 2}};
+    std::vector<Eigen::Vector3i> ind{ {0, 1, 2} };
 
     auto pos_id = r.load_positions(pos);
     auto ind_id = r.load_indices(ind);
@@ -132,6 +157,7 @@ int main(int argc, const char** argv)
         r.set_model(get_model_matrix(angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
+        r.set_rodrigues(get_rotation(raxis, rangle));
 
         r.draw(pos_id, ind_id, rst::Primitive::Triangle);
         cv::Mat image(700, 700, CV_32FC3, r.frame_buffer().data());
@@ -142,13 +168,22 @@ int main(int argc, const char** argv)
         return 0;
     }
 
-    //返回值为27（即键盘对应esc键）程序退出循环直接结束
+    bool rflag = false;
+
+    std::cout << "Please enter the axis and angle:" << std::endl;
+    std::cin >> raxis.x() >> raxis.y() >> raxis.z() >> ra;//定义罗德里格斯旋转轴和角
+
     while (key != 27) {
         r.clear(rst::Buffers::Color | rst::Buffers::Depth);
 
         r.set_model(get_model_matrix(angle));
         r.set_view(get_view_matrix(eye_pos));
         r.set_projection(get_projection_matrix(45, 1, 0.1, 50));
+
+        if (rflag) //如果按下r了，就开始绕给定任意轴旋转
+            r.set_rodrigues(get_rotation(raxis, rangle));
+        else
+            r.set_rodrigues(get_rotation({ 0,0,1 }, 0));
 
         r.draw(pos_id, ind_id, rst::Primitive::Triangle);
 
@@ -164,6 +199,10 @@ int main(int argc, const char** argv)
         }
         else if (key == 'd') {
             angle -= 10;
+        }
+        else if (key == 'r') {
+            rflag = true;
+            rangle += ra;
         }
     }
 

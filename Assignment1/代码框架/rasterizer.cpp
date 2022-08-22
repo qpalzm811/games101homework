@@ -235,3 +235,10 @@ void rst::rasterizer::set_pixel(const Eigen::Vector3f& point, const Eigen::Vecto
     frame_buf[ind] = color;
 }
 
+//后加的Rodrigues旋转公式声明
+void rst::rasterizer::set_rodrigues(const Eigen::Matrix4f& r) 
+{
+    rodrigues = r;
+}
+
+
